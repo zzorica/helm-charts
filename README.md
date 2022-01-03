@@ -1,7 +1,4 @@
-# helm charts
-
-
-# zzorica Kubernetes Helm Charts
+# Kubernetes Helm Charts
 
 [![License](https://img.shields.io/github/license/zzorica/helm-charts?style=plastic)](https://opensource.org/licenses/MIT)
 
