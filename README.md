@@ -19,5 +19,4 @@ You can then run `helm search repo zzorica` to see the charts.
 
 ## License
 
-<!-- Keep full URL links to repo files because this README syncs from main to gh-pages.  -->
-[Apache 2.0 License](https://github.com/grafana/helm-charts/blob/main/LICENSE).
+[MIT License](https://github.com/zzorica/helm-charts/blob/main/LICENSE).
