@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  freescout:
+  - apiVersion: v2
+    appVersion: 1.15.24
+    created: "2022-01-03T21:28:22.199619131+01:00"
+    description: A Helm chart for Kubernetes
+    digest: 5d3dc55dee21389bc22c51a2af12305729959965074cb500daffb39eeed93a4e
+    name: freescout
+    type: application
+    urls:
+    - freescout-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-01-03T21:28:22.193799173+01:00"

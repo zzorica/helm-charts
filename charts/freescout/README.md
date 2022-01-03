@@ -1,0 +1,1 @@
+# freescout helm chart

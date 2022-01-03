@@ -1,0 +1,146 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "freescout.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "freescout.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "freescout.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "freescout.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "freescout.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: wait-for-db
+          image: zzorica/k8s-mgmt-pod:0.4.1
+          command: ["sh", "-c", "while ! db_alive mysql $DB_HOST; do sleep 2; done"]
+          env:
+          - name: DB_HOST
+            {{- if .Values.mariadb.enabled }}
+            value: {{ template "mariadb.primary.fullname" .Subcharts.mariadb }}
+            {{- else }}
+            value: {{ .Values.externalDatabase.host | quote }}
+            {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: ADMIN_EMAIL
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "freescout.fullname" . }}
+                key: admin-email
+          - name: ADMIN_PASS
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "freescout.fullname" . }}
+                key: admin-password
+          - name: ADMIN_FIRST_NAME
+            value: {{ .Values.freescout.admin_first_name |  default "Admin" | quote}}
+          - name: ADMIN_LAST_NAME
+            value: {{ .Values.freescout.admin_last_name |  default "User" | quote }}
+          - name: APPLICATION_NAME
+            value: {{ .Values.freescout.application_name |  default "Freescout" | quote }}
+          {{- if .Values.mariadb.enabled }}
+          - name: DB_HOST
+            value: {{ template "mariadb.primary.fullname" .Subcharts.mariadb }}
+          - name: DB_PORT
+            value: "3306"
+          - name: DB_NAME
+            value: {{ .Values.mariadb.auth.database | quote }}
+          - name: DB_USER
+            value: {{ .Values.mariadb.auth.username | quote }}
+          {{- if .Values.mariadb.existingSecret }}
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.mariadb.existingSecret | quote}}
+                key: "mariadb-password"
+          {{- else }}
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "mariadb.primary.fullname" .Subcharts.mariadb }}
+                key: "mariadb-password"
+          {{- end }}
+          {{- else }}
+          - name: DB_HOST
+            value: {{ .Values.externalDatabase.host | quote }}
+          - name: DB_PORT
+            value: "3306"
+          - name: DB_NAME
+            value: {{ .Values.externalDatabase.database | quote }}
+          - name: DB_USER
+            value: {{ .Values.externalDatabase.username | quote }}
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.externalDatabase.existingSecret.secretName | default (printf "%s-%s" .Release.Name "db") }}
+                key: {{ .Values.externalDatabase.existingSecret.passwordKey | default "db-password" }}
+          {{- end }}
+          - name: DISPLAY_ERRORS
+            value: {{ .Values.freescout.display_errors | quote }}
+          - name: ENABLE_AUTO_UPDATE
+            value: {{ .Values.freescout.enable_auto_update | quote }}
+          - name: ENABLE_SSL_PROXY
+            value: {{ .Values.freescout.enable_ssl_proxy | quote }}
+          - name: SITE_URL
+            value: {{ .Values.freescout.site_url | quote }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "freescout.fullname" . }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
