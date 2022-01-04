@@ -25,6 +25,4 @@ jobs:
           charts_url: https://zzorica.github.io/helm-charts/
           branch: gh-pages
           target_dir: charts
-          commit_username: zzorica
-          commit_email: zoran.zorica@gmail.com
           index_dir: .
