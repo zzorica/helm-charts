@@ -1,0 +1,19 @@
+apiVersion: v1
+entries:
+  freescout:
+  - apiVersion: v2
+    appVersion: 1.15.24
+    created: "2022-01-04T10:49:37.035855536Z"
+    dependencies:
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.2.*
+    description: A Helm chart for Kubernetes
+    digest: 4757f5a109756b6e0fcb04ab70bcbf8f4bd1810e46a529b14f132c4a00abfbd3
+    name: freescout
+    type: application
+    urls:
+    - https://zzorica.github.io/helm-charts/charts/charts/freescout-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-01-04T10:49:37.030750503Z"
