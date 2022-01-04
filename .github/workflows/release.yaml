@@ -20,7 +20,7 @@ jobs:
         uses: stefanprodan/helm-gh-pages@master
         with:
           helm_version: 3.7.2
-          token: ${{ secrets.BOT_GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           charts_dir: charts
           branch: gh-pages
           target_dir: charts
