@@ -1,0 +1,29 @@
+name: Release Charts
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'charts/**/README.md'
+      - 'LICENSE'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+     
+      - uses: actions/checkout@v2
+     
+      - name: Publish Helm chart
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.BOT_GITHUB_TOKEN }}
+          charts_dir: charts
+          charts_url: https://zzorica.github.io/helm-charts/
+          branch: gh-pages
+          target_dir: charts
+          commit_username: zzorica
+          commit_email: zoran.zorica@gmail.com
+          index_dir: .
