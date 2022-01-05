@@ -12,10 +12,10 @@ Please refer to Helm's [documentation](https://helm.sh/docs/) to get started.
 Once Helm is set up properly, add the repo as follows:
 
 ```console
-helm repo add zzorica https://zzorica.github.io/helm-charts
+helm repo add soultrace https://git.soultrace.net
 ```
 
-You can then run `helm search repo zzorica` to see the charts.
+You can then run `helm search repo soultrace` to see the charts.
 
 ## License
 
