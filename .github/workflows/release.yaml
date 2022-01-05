@@ -22,6 +22,7 @@ jobs:
           helm_version: 3.7.2
           token: ${{ secrets.GITHUB_TOKEN }}
           charts_dir: charts
+          charts_url: https://charts.soultrace.net
           branch: gh-pages
           target_dir: charts
           index_dir: .
