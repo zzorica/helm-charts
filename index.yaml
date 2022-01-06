@@ -3,6 +3,21 @@ entries:
   freescout:
   - apiVersion: v2
     appVersion: 1.15.24
+    created: "2022-01-06T00:33:45.559004505Z"
+    dependencies:
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.2.*
+    description: A Helm chart for Kubernetes
+    digest: dfd9ca41950d08ffcfed6203ef4bddb15c8fcc389065d1700a18035efead4a2a
+    name: freescout
+    type: application
+    urls:
+    - https://charts.soultrace.net/charts/freescout-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.15.24
     created: "2022-01-06T00:23:46.900311405Z"
     dependencies:
     - condition: mariadb.enabled
@@ -31,4 +46,4 @@ entries:
     urls:
     - https://charts.soultrace.net/charts/freescout-0.1.0.tgz
     version: 0.1.0
-generated: "2022-01-06T00:23:46.894919534Z"
+generated: "2022-01-06T00:33:45.552506966Z"
