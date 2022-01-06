@@ -35,7 +35,7 @@ spec:
           env:
           - name: DB_HOST
             {{- if .Values.mariadb.enabled }}
-            value: {{ template "mariadb.primary.fullname" .Subcharts.mariadb }}
+            value: {{ printf "%s-mariadb" .Release.Name | quote }}
             {{- else }}
             value: {{ .Values.externalDatabase.host | quote }}
             {{- end }}
