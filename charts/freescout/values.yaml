@@ -111,7 +111,7 @@ freescout:
 persistence:
   enabled: false
   annotations: {}
-  ## nextcloud data Persistent Volume Storage Class
+  ## freescout data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
   ## If undefined (the default) or set to null, no storageClassName spec is

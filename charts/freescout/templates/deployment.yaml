@@ -64,7 +64,7 @@ spec:
             value: {{ .Values.freescout.application_name |  default "Freescout" | quote }}
           {{- if .Values.mariadb.enabled }}
           - name: DB_HOST
-            value: {{ template "mariadb.primary.fullname" .Subcharts.mariadb }}
+            value: {{ printf "%s-mariadb" .Release.Name | quote }}
           - name: DB_PORT
             value: "3306"
           - name: DB_NAME
@@ -75,13 +75,13 @@ spec:
           - name: DB_PASS
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.mariadb.existingSecret | quote}}
+                name: {{ .Values.mariadb.existingSecret | quote }}
                 key: "mariadb-password"
           {{- else }}
           - name: DB_PASS
             valueFrom:
               secretKeyRef:
-                name: {{ template "mariadb.primary.fullname" .Subcharts.mariadb }}
+                name: {{ printf "%s-mariadb" .Release.Name | quote }}
                 key: "mariadb-password"
           {{- end }}
           {{- else }}
