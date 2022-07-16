@@ -88,7 +88,7 @@ freescout:
     # secretName: nameofsecret
     # adminEmailKey: adminEmail
     # passwordKey: password
-  
+
   # Administrator Email Address - Needed for logging in
   admin_email: "admin@example.com"
   # Admin user First Name (default: Admin)
@@ -142,7 +142,7 @@ externalDatabase:
   username: freescout
   ## Database password. Set it here or use specify password key in existing secret below
   password: changeme
-  
+
   ## Use a existing secret
   existingSecret:
     enabled: false
@@ -155,7 +155,7 @@ externalDatabase:
 mariadb:
   ## Whether to deploy a mariadb server to satisfy the applications database requirements. To use an external database set this to false and configure the externalDatabase parameters
   enabled: true
-  
+
   architecture: standalone
 
   auth:
@@ -178,7 +178,7 @@ mariadb:
       # storageClass: ""
       accessMode: ReadWriteOnce
       size: 8Gi
-    
+
     resources: {}
       # We usually recommend not to specify default resources and to leave this as a conscious
       # choice for the user. This also increases chances charts run on environments with little
