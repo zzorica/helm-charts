@@ -35,14 +35,14 @@ jobs:
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          changed=$(ct list-changed --target-branch main)
+          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
           fi
 
       - name: Run chart-testing (lint)
         id: lint
-        run: ct lint --config ct.yaml --target-branch main --validate-maintainers=false
+        run: ct lint --config ct.yaml --target-branch ${{ github.event.repository.default_branch }} --validate-maintainers=false
         if: steps.list-changed.outputs.changed == 'true'
 
       - name: Create kind cluster
@@ -51,4 +51,5 @@ jobs:
 
       - name: Run chart-testing (install)
         id: install
-        run: ct install --config ct.yaml
+        run: ct install --config ct.yaml --target-branch ${{ github.event.repository.default_branch }}
+        if: steps.list-changed.outputs.changed == 'true'
