@@ -1,7 +1,9 @@
 apiVersion: v2
 name: freescout
 description: A Helm chart for Kubernetes
-
+maintainers:
+  - name:  Zoran Zorica
+    email: zzorica@soultrace.net
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
