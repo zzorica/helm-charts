@@ -42,13 +42,11 @@ jobs:
 
       - name: Run chart-testing (lint)
         id: lint
-        if: steps.list-changed.outputs.changed == 'true'
         run: ct lint --config ct.yaml --target-branch main --validate-maintainers=false
+        if: steps.list-changed.outputs.changed == 'true'
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.3.0
-        with:
-          install_local_path_provisioner: true
         if: steps.list-changed.outputs.changed == 'true'
 
       - name: Run chart-testing (install)
