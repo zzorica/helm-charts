@@ -106,7 +106,7 @@ freescout:
   # If using SSL reverse proxy force application to return https URLs TRUE or FALSE
   enable_ssl_proxy: false
   # The url your site listens on example https://freescout.example.com
-  site_url: #http://127.0.0.1:8080
+  site_url: http://freescout:80
 
 persistence:
   enabled: false
