@@ -51,7 +51,7 @@ spec:
               secretKeyRef:
                 name: {{ .Values.freescout.existingSecret.secretName | default .Release.Name }}
                 key: {{ .Values.freescout.existingSecret.adminEmailKey | default "admin-email" }}
-          - name: ADMIN_PASSWORD
+          - name: ADMIN_PASS
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.freescout.existingSecret.secretName | default .Release.Name }}
