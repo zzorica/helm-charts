@@ -49,13 +49,13 @@ spec:
           - name: ADMIN_EMAIL
             valueFrom:
               secretKeyRef:
-                name: {{ template "freescout.fullname" . }}
-                key: admin-email
-          - name: ADMIN_PASS
+                name: {{ .Values.freescout.existingSecret.secretName | default .Release.Name }}
+                key: {{ .Values.freescout.existingSecret.adminEmailKey | default "admin-email" }}
+          - name: ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ template "freescout.fullname" . }}
-                key: admin-password
+                name: {{ .Values.freescout.existingSecret.secretName | default .Release.Name }}
+                key: {{ .Values.freescout.existingSecret.passwordKey | default "admin-password" }}
           - name: ADMIN_FIRST_NAME
             value: {{ .Values.freescout.admin_first_name |  default "Admin" | quote}}
           - name: ADMIN_LAST_NAME
@@ -71,11 +71,11 @@ spec:
             value: {{ .Values.mariadb.auth.database | quote }}
           - name: DB_USER
             value: {{ .Values.mariadb.auth.username | quote }}
-          {{- if .Values.mariadb.existingSecret }}
+          {{- if .Values.mariadb.auth.existingSecret }}
           - name: DB_PASS
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.mariadb.existingSecret | quote }}
+                name: {{ .Values.mariadb.auth.existingSecret | quote }}
                 key: "mariadb-password"
           {{- else }}
           - name: DB_PASS
