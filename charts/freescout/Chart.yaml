@@ -1,7 +1,10 @@
 apiVersion: v2
 name: freescout
 description: A Helm chart for Kubernetes
-
+icon: https://freescout.net/apple-touch-icon.png
+maintainers:
+  - name: Zoran Zorica
+    email: zzorica@soultrace.net
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
@@ -15,7 +18,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.4
+version: 0.1.5
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
