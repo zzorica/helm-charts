@@ -86,8 +86,8 @@ freescout:
   existingSecret:
     enabled: false
     # secretName: nameofsecret
-    # adminEmailKey: adminEmail
-    # passwordKey: password
+    # adminEmailKey: admin-email
+    # passwordKey: admin-password
 
   # Administrator Email Address - Needed for logging in
   admin_email: "admin@example.com"
