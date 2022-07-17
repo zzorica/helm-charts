@@ -1,6 +1,7 @@
 apiVersion: v2
 name: freescout
 description: A Helm chart for Kubernetes
+icon: https://freescout.net/apple-touch-icon.png
 maintainers:
   - name: Zoran Zorica
     email: zzorica@soultrace.net
