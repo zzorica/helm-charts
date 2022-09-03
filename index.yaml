@@ -2,6 +2,25 @@ apiVersion: v1
 entries:
   freescout:
   - apiVersion: v2
+    appVersion: 1.15.56
+    created: "2022-09-03T17:28:08.335165165Z"
+    dependencies:
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.0.2
+    description: A Helm chart for Kubernetes
+    digest: e1e6cde16ecdd480b2aca86b5ba094362e44abaf27e0534eed234cd1c42922bc
+    icon: https://freescout.net/apple-touch-icon.png
+    maintainers:
+    - email: zzorica@soultrace.net
+      name: Zoran Zorica
+    name: freescout
+    type: application
+    urls:
+    - https://charts.soultrace.net/charts/freescout-0.1.9.tgz
+    version: 0.1.9
+  - apiVersion: v2
     appVersion: 1.15.48
     created: "2022-09-03T16:55:26.860702538Z"
     dependencies:
@@ -152,4 +171,4 @@ entries:
     urls:
     - https://charts.soultrace.net/charts/freescout-0.1.0.tgz
     version: 0.1.0
-generated: "2022-09-03T16:55:26.854262677Z"
+generated: "2022-09-03T17:28:08.328693017Z"
