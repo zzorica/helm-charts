@@ -42,9 +42,9 @@ admin:
   # Disabling the admin token will make the admin portal accessible to anyone, use carefully: https://github.com/dani-garcia/vaultwarden/wiki/Disable-admin-token
   disableAdminToken: false
   ## Token for admin login, will be generated if not defined. https://github.com/dani-garcia/vaultwarden/wiki/Enabling-admin-page
-  #token:
+  # token:
   ## Use existing secret for the admin token. Key is 'admin-token'.
-  #existingSecret:
+  # existingSecret:
 
 smtp:
   enabled: false
