@@ -53,23 +53,23 @@ smtp:
   # SMTP sender e-mail address, required if SMTP is enabled.
   from: ""
   ## SMTP sender name, defaults to 'Vaultwarden'.
-  #fromName: ""
+  # fromName: ""
   # Enable SSL connection.
   ssl: true
   ## Use Explicit TLS mode, requires that 'ssl' is enabled.
-  #explicitTLS: false
+  # explicitTLS: false
   ## SMTP port. Defaults to 25 without SSL, 587 with SSL.
-  #port: 587
+  # port: 587
   ## SMTP Authentication Mechanisms. Comma-separated options: 'Plain', 'Login' and 'Xoauth2'. Defaults to 'Plain'.
-  #authMechanism: Plain
+  # authMechanism: Plain
   ## SMTP timeout.
-  #timeout: 15
+  # timeout: 15
   ## SMTP username.
-  #user: ""
+  # user: ""
   ## SMTP password. Required is user is specified, ignored if no user provided.
-  #password: ""
+  # password: ""
   ## Use existing secret for SMTP authentication. Keys are 'smtp-user' and 'smtp-password'.
-  #existingSecret:
+  # existingSecret:
 
 env:
  # DOMAIN: https://vw.domain.tld:8443
