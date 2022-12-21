@@ -3,14 +3,14 @@ entries:
   freescout:
   - apiVersion: v2
     appVersion: 1.15.72
-    created: "2022-12-21T15:16:26.411112409Z"
+    created: "2022-12-21T16:14:10.225255088Z"
     dependencies:
     - condition: mariadb.enabled
       name: mariadb
       repository: https://charts.bitnami.com/bitnami
       version: ~11.x
     description: A Helm chart for Kubernetes
-    digest: 129e5881f6eba28c5f9c6e596a0c1cc93a9e5ed05735fe627ae95bd80c12f557
+    digest: 87d376c70f2baee2828560055dd05fd76b455c9d4b7bffdbf33fe89d57c63bc4
     icon: https://freescout.net/apple-touch-icon.png
     maintainers:
     - email: zzorica@soultrace.net
@@ -193,6 +193,16 @@ entries:
   vaultwarden:
   - apiVersion: v2
     appVersion: 1.26.0
+    created: "2022-12-21T16:14:10.225926193Z"
+    description: A Helm chart for Kubernetes Vaultwarden
+    digest: 4a9ea63fe175c5782676a933fa2261858f4544078c9546bf1d509bb34844554b
+    name: vaultwarden
+    type: application
+    urls:
+    - https://charts.soultrace.net/charts/vaultwarden-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.26.0
     created: "2022-12-21T15:16:26.411761603Z"
     description: A Helm chart for Kubernetes Vaultwarden
     digest: 40bd163e555a826691dd177b0214569412c58538b10319aa24d480d3b2569e5e
@@ -201,4 +211,4 @@ entries:
     urls:
     - https://charts.soultrace.net/charts/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2022-12-21T15:16:26.401614999Z"
+generated: "2022-12-21T16:14:10.21844414Z"
