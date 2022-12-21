@@ -2,11 +2,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ template "freescout.fullname" . }}
+  name: {{ template "vaultwarden.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ include "freescout.name" . }}
-    helm.sh/chart: {{ include "freescout.chart" . }}
+    app.kubernetes.io/name: {{ include "vaultwarden.name" . }}
+    helm.sh/chart: {{ include "vaultwarden.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: app
