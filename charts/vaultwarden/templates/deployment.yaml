@@ -1,0 +1,138 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vaultwarden.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "vaultwarden.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "vaultwarden.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "vaultwarden.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "vaultwarden.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          env:
+            {{- if eq .Values.admin.enabled true }}
+            {{- if eq .Values.admin.disableAdminToken true }}
+            - name: DISABLE_ADMIN_TOKEN
+              value: "true"
+            {{- else }}
+            - name: ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.admin.existingSecret | default (include "vaultwarden.fullname" .) }}
+                  key: admin-token
+            {{- end }}
+            {{- end }}
+            {{- if eq .Values.smtp.enabled true }}
+            - name: SMTP_HOST
+              value: {{ required "SMTP host is required to enable SMTP" .Values.smtp.host | quote }}
+            - name: SMTP_FROM
+              value: {{ required "SMTP sender address ('from') is required to enable SMTP" .Values.smtp.from | quote }}
+            {{- if .Values.smtp.fromName }}
+            - name: SMTP_FROM_NAME
+              value: {{ .Values.smtp.fromName | quote }}
+            {{- end }}
+            - name: SMTP_SSL
+              value: {{ .Values.smtp.ssl | quote }}
+            {{- if .Values.smtp.explicitTLS }}
+              {{- if (eq .Values.smtp.ssl false) }}
+                {{- required "Explicit TLS requires SSL to be enabled" nil }}
+              {{- end }}
+            - name: SMTP_EXPLICIT_TLS
+              value: {{ .Values.smtp.explicitTLS | quote }}
+            {{- end }}
+            {{- if .Values.smtp.port }}
+            - name: SMTP_PORT
+              value: {{ .Values.smtp.port | quote }}
+            {{- end }}
+            {{- if .Values.smtp.authMechanism }}
+            - name: SMTP_AUTH_MECHANISM
+              value: {{ .Values.smtp.authMechanism | quote }}
+            {{- end }}
+            {{- if .Values.smtp.timeout }}
+            - name: SMTP_TIMEOUT
+              value: {{ .Values.smtp.timeout | quote }}
+            {{- end }}
+            {{- if or .Values.smtp.existingSecret .Values.smtp.user }}
+            - name: SMTP_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.smtp.existingSecret | default (include "vaultwarden.fullname" .) }}
+                  key: smtp-user
+            - name: SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.smtp.existingSecret | default (include "vaultwarden.fullname" .) }}
+                  key: smtp-password
+            {{- end }}
+            {{- end }}
+            {{- range $key, $value := .Values.env }}
+            - name: "{{ tpl $key $ }}"
+              value: "{{ tpl (print $value) $ }}"
+            {{- end }}
+          envFrom:
+          {{- if .Values.envFromSecret }}
+            - secretRef:
+                name: {{ tpl .Values.envFromSecret . }}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "vaultwarden.fullname" . }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
