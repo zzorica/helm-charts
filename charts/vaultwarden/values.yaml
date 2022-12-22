@@ -54,10 +54,8 @@ smtp:
   from: ""
   ## SMTP sender name, defaults to 'Vaultwarden'.
   # fromName: ""
-  # Enable SSL connection.
-  ssl: true
-  ## Use Explicit TLS mode, requires that 'ssl' is enabled.
-  # explicitTLS: false
+  ## Enable a secure connection. Default is "starttls" (Explicit - ports 587 or 25), "force_tls" (Implicit - port 465) or "off", no encryption (port 25).
+  # smtp_security: starttls
   ## SMTP port. Defaults to 25 without SSL, 587 with SSL.
   # port: 587
   ## SMTP Authentication Mechanisms. Comma-separated options: 'Plain', 'Login' and 'Xoauth2'. Defaults to 'Plain'.
@@ -80,7 +78,7 @@ envFromSecret: {}
 persistence:
   enabled: false
   annotations: {}
-  ## freescout data Persistent Volume Storage Class
+  ## vaultwarden data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
   ## If undefined (the default) or set to null, no storageClassName spec is

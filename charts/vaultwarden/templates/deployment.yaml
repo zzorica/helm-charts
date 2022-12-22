@@ -59,15 +59,8 @@ spec:
             {{- if .Values.smtp.fromName }}
             - name: SMTP_FROM_NAME
               value: {{ .Values.smtp.fromName | quote }}
-            {{- end }}
-            - name: SMTP_SSL
-              value: {{ .Values.smtp.ssl | quote }}
-            {{- if .Values.smtp.explicitTLS }}
-              {{- if (eq .Values.smtp.ssl false) }}
-                {{- required "Explicit TLS requires SSL to be enabled" nil }}
-              {{- end }}
-            - name: SMTP_EXPLICIT_TLS
-              value: {{ .Values.smtp.explicitTLS | quote }}
+            - name: SMTP_SECURITY
+              value: {{ .Values.smtp.smtp_security | quote }}
             {{- end }}
             {{- if .Values.smtp.port }}
             - name: SMTP_PORT
