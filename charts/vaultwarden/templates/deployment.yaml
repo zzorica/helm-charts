@@ -58,9 +58,9 @@ spec:
               value: {{ required "SMTP sender address ('from') is required to enable SMTP" .Values.smtp.from | quote }}
             {{- if .Values.smtp.fromName }}
             - name: SMTP_FROM_NAME
-              value: {{ .Values.smtp.fromName | quote }}
+              value: {{ .Values.smtp.fromName | default "Vaultwarden" | quote }}
             - name: SMTP_SECURITY
-              value: {{ .Values.smtp.smtp_security | quote }}
+              value: {{ .Values.smtp.smtp_security | default "starttls" | quote }}
             {{- end }}
             {{- if .Values.smtp.port }}
             - name: SMTP_PORT
