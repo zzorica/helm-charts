@@ -24,7 +24,7 @@ version: 0.1.11
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "1.16.28"
+appVersion: "php8.2-1.16.28"
 dependencies:
 - name: mariadb
   version: ~11.x
