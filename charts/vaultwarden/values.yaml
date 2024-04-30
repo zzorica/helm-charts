@@ -23,12 +23,21 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
+# Strategy for Deployment updates. Use recreate if you use PVCs as it will need first to be detached from the old pod and attached to the new one.
+deploymentStrategy:
+  type: RollingUpdate # RollingUpdate or Recreate
+  rollingUpdate:
+    maxSurge: 1 # Relative or absolute number of pods that can be created above desired
+    maxUnavailable: 0 # Relative or absolute number of pods that can be unavailable
+
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -70,8 +79,8 @@ smtp:
   # existingSecret:
 
 env:
- # DOMAIN: https://vw.domain.tld:8443
- # SIGNUPS_ALLOWED: true
+  # DOMAIN: https://vw.domain.tld:8443
+  # SIGNUPS_ALLOWED: true
 
 envFromSecret: {}
 
@@ -102,7 +111,8 @@ service:
 ingress:
   enabled: false
   className: ""
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -115,7 +125,8 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources:
+  {}
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
