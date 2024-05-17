@@ -115,12 +115,22 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /login
               port: http
+              {{- if .Values.freescout.enable_ssl_proxy }}
+              httpHeaders:
+                - name: X-Forwarded-Proto
+                  value: https
+              {{- end }}
           readinessProbe:
             httpGet:
-              path: /
+              path: /login
               port: http
+              {{- if .Values.freescout.enable_ssl_proxy }}
+              httpHeaders:
+                - name: X-Forwarded-Proto
+                  value: https
+              {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
