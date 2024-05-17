@@ -2,6 +2,25 @@ apiVersion: v1
 entries:
   freescout:
   - apiVersion: v2
+    appVersion: php8.2-1.17.72
+    created: "2024-05-17T13:59:40.097498467Z"
+    dependencies:
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: ~11.x
+    description: A Helm chart for Kubernetes
+    digest: 263198bc6ba161aab1c15e2086d3fa995169c523d68d22e03da1888c81414789
+    icon: https://freescout.net/apple-touch-icon.png
+    maintainers:
+    - email: zzorica@soultrace.net
+      name: Zoran Zorica
+    name: freescout
+    type: application
+    urls:
+    - https://charts.soultrace.net/charts/freescout-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: php8.2-1.17.32
     created: "2024-04-30T09:47:41.609742967Z"
     dependencies:
@@ -269,9 +288,9 @@ entries:
   vaultwarden:
   - apiVersion: v2
     appVersion: 1.30.5
-    created: "2024-04-30T09:47:41.610385457Z"
+    created: "2024-05-17T13:59:40.098012718Z"
     description: A Helm chart for Kubernetes Vaultwarden
-    digest: 31279a88678b2e855d831301f246626413cf3c1070bf1b079e429f9aa0bbd5d2
+    digest: 281a3f5c7b3ecf500885733222baa1773d6afe745aa3c32389fb012d95950121
     name: vaultwarden
     type: application
     urls:
@@ -357,4 +376,4 @@ entries:
     urls:
     - https://charts.soultrace.net/charts/vaultwarden-0.1.0.tgz
     version: 0.1.0
-generated: "2024-04-30T09:47:41.605520539Z"
+generated: "2024-05-17T13:59:40.092767602Z"
