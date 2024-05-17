@@ -114,6 +114,7 @@ spec:
               containerPort: 80
               protocol: TCP
           livenessProbe:
+            initialDelaySeconds: 20
             httpGet:
               path: /login
               port: http
@@ -123,6 +124,7 @@ spec:
                   value: https
               {{- end }}
           readinessProbe:
+            initialDelaySeconds: 20
             httpGet:
               path: /login
               port: http
