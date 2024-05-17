@@ -85,10 +85,12 @@ spec:
                 key: "mariadb-password"
           {{- end }}
           {{- else }}
+          - name: DB_TYPE
+            value: {{ .Values.externalDatabase.type | quote }}
           - name: DB_HOST
             value: {{ .Values.externalDatabase.host | quote }}
           - name: DB_PORT
-            value: "3306"
+            value: {{ .Values.externalDatabase.port | quote }}
           - name: DB_NAME
             value: {{ .Values.externalDatabase.database | quote }}
           - name: DB_USER
