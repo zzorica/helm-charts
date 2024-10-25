@@ -33,12 +33,45 @@ spec:
           image: zzorica/k8s-mgmt-pod:0.5.2
           command: ["sh", "-c", "while ! db_alive mysql $DB_HOST; do sleep 2; done"]
           env:
+          {{- if .Values.mariadb.enabled }}
           - name: DB_HOST
-            {{- if .Values.mariadb.enabled }}
             value: {{ printf "%s-mariadb" .Release.Name | quote }}
-            {{- else }}
+          - name: DB_PORT
+            value: "3306"
+          - name: DB_NAME
+            value: {{ .Values.mariadb.auth.database | quote }}
+          - name: DB_USER
+            value: {{ .Values.mariadb.auth.username | quote }}
+          {{- if .Values.mariadb.auth.existingSecret }}
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.mariadb.auth.existingSecret | quote }}
+                key: "mariadb-password"
+          {{- else }}
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: {{ printf "%s-mariadb" .Release.Name | quote }}
+                key: "mariadb-password"
+          {{- end }}
+          {{- else }}
+          - name: DB_TYPE
+            value: {{ .Values.externalDatabase.type | quote }}
+          - name: DB_HOST
             value: {{ .Values.externalDatabase.host | quote }}
-            {{- end }}
+          - name: DB_PORT
+            value: {{ .Values.externalDatabase.port | quote }}
+          - name: DB_NAME
+            value: {{ .Values.externalDatabase.database | quote }}
+          - name: DB_USER
+            value: {{ .Values.externalDatabase.username | quote }}
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.externalDatabase.existingSecret.secretName | default (printf "%s-%s" .Release.Name "db") }}
+                key: {{ .Values.externalDatabase.existingSecret.passwordKey | default "db-password" }}
+          {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
