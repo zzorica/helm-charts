@@ -109,6 +109,9 @@ spec:
             value: {{ .Values.freescout.enable_ssl_proxy | quote }}
           - name: SITE_URL
             value: {{ .Values.freescout.site_url | quote }}
+          {{- if .Values.extraEnv }}
+            {{- toYaml .Values.extraEnv | nindent 12 }}
+          {{- end }}
           ports:
             - name: http
               containerPort: 80
