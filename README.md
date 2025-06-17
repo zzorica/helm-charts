@@ -17,6 +17,12 @@ helm repo add soultrace https://charts.soultrace.net
 
 You can then run `helm search repo soultrace` to see the charts.
 
+## Available Charts
+
+- [**Freescout Helm Chart**](charts/freescout): Easily deploy [Freescout](https://freescout.net) on your Kubernetes cluster.
+
+- [**Vaultwarden Helm Chart**](charts/vaultwarden): Deploy [Vaultwarden](https://vaultwarden.dev/), a Bitwarden-compatible password management server, using Helm.
+
 ## License
 
 [MIT License](https://github.com/zzorica/helm-charts/blob/main/LICENSE).
