@@ -110,7 +110,7 @@ spec:
           - name: SITE_URL
             value: {{ .Values.freescout.site_url | quote }}
           {{- if .Values.extraEnv }}
-            {{- toYaml .Values.extraEnv | nindent 12 }}
+            {{- toYaml .Values.extraEnv | nindent 10 }}
           {{- end }}
           ports:
             - name: http
