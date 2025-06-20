@@ -85,6 +85,9 @@ tolerations: []
 
 affinity: {}
 
+# Add additional environment variables to the pod.
+extraEnv: []
+
 freescout:
   # Use existing secret for Administrator account. If set to false set them below directly in values
   existingSecret:
