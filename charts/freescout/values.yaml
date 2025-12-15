@@ -133,6 +133,7 @@ persistence:
 
 ##
 ## External database configuration
+## When enabled=true, you must set mariadb.enabled=false to disable the MariaDB subchart
 ##
 externalDatabase:
   enabled: false
@@ -157,9 +158,11 @@ externalDatabase:
 
 ##
 ## MariaDB chart configuration
+## NOTE: When externalDatabase.enabled=true, you must set mariadb.enabled=false
 ##
 mariadb:
-  ## Whether to deploy a mariadb server to satisfy the applications database requirements. To use an external database set this to false and configure the externalDatabase parameters
+  ## Whether to deploy a mariadb server to satisfy the applications database requirements.
+  ## Set to false when using an external database (externalDatabase.enabled=true)
   enabled: true
 
   image:

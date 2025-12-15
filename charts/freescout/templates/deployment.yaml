@@ -31,7 +31,7 @@ spec:
       initContainers:
         - name: wait-for-db
           image: zzorica/k8s-mgmt-pod:0.5.2
-          command: ["sh", "-c", "while ! db_alive mysql $DB_HOST; do sleep 2; done"]
+          command: ["sh", "-c", "while ! db_alive {{ if .Values.mariadb.enabled }}mysql{{ else }}{{ if eq .Values.externalDatabase.type "pgsql" }}psql{{ else }}mysql{{ end }}{{ end }} $DB_HOST; do sleep 2; done"]
           env:
           - name: DB_HOST
             {{- if .Values.mariadb.enabled }}
