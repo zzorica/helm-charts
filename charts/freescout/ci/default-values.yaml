@@ -1,0 +1,3 @@
+# Values used by chart-testing (ct install). APP_URL is mandatory for the image.
+freescout:
+  app_url: http://freescout.example.com

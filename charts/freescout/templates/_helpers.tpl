@@ -73,3 +73,27 @@ Adjust ingress apiVersion depending on k8s version
 {{- print "networking.k8s.io/v1" -}}
 {{- end }}
 {{- end -}}
+
+{{/*
+Resolve the external application URL (APP_URL). Order: freescout.app_url, deprecated
+freescout.site_url, first ingress host. The image refuses to start without it.
+*/}}
+{{- define "freescout.appUrl" -}}
+{{- if .Values.freescout.app_url -}}
+{{- .Values.freescout.app_url -}}
+{{- else if .Values.freescout.site_url -}}
+{{- .Values.freescout.site_url -}}
+{{- else if and .Values.ingress.enabled .Values.ingress.hosts -}}
+{{- printf "http%s://%s" (ternary "s" "" (not (empty .Values.ingress.tls))) (index .Values.ingress.hosts 0).host -}}
+{{- else -}}
+{{- required "freescout.app_url must be set to the external URL of the site (e.g. https://freescout.example.com)" .Values.freescout.app_url -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Hostname part of the application URL, used as Host header for probes since the image only
+trusts requests for that host.
+*/}}
+{{- define "freescout.appHost" -}}
+{{- (urlParse (include "freescout.appUrl" .)).host -}}
+{{- end -}}

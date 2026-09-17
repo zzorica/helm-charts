@@ -5,7 +5,9 @@
 replicaCount: 1
 
 image:
-  repository: tiredofit/freescout
+  # nfrastack/freescout replaces tiredofit/freescout (removed from Docker Hub).
+  # Mirror: ghcr.io/nfrastack/container-freescout
+  repository: nfrastack/freescout
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -102,14 +104,30 @@ freescout:
   admin_pass: ""
   # Change application name (default: Freescout)
   application_name: ""
-  # Display errors on Website (default: false)
+  # Enable Laravel debug mode / display errors on website (default: false)
   display_errors: false
-  # If coming from an earlier version of image, automatically update it to latest Freescout release
-  enable_auto_update: false
-  # If using SSL reverse proxy force application to return https URLs TRUE or FALSE
-  enable_ssl_proxy: false
-  # The url your site listens on example https://freescout.example.com
+  # Run database migrations when the image ships a newer FreeScout than the one recorded on the
+  # data volume. Keep this enabled: with the 2.x image the application code lives in the image, so
+  # disabling it means image upgrades will not migrate the database.
+  enable_auto_update: true
+  # Trust reverse proxies (ingress controller) so X-Forwarded-Proto/For are honoured and https
+  # URLs are generated. Set to "**" to trust all proxies, or a comma separated list of CIDRs.
+  # Leave empty to not trust any proxy.
+  trusted_proxies: "**"
+  # Full external URL of the site, e.g. https://freescout.example.com. Required by the image.
+  # If empty, it is derived from the first ingress host when ingress is enabled.
+  app_url: ""
+  # Deprecated alias of app_url, kept for backwards compatibility.
   site_url: ""
+
+# Add additional FreeScout .env settings. Keys are written to the FreeScout config with the
+# FREESCOUT_ prefix stripped, e.g. MAIL_DRIVER: smtp -> MAIL_DRIVER=smtp in .env
+freescoutConfig: {}
+  # APP_LOCALE: en
+  # MAIL_DRIVER: smtp
+  # MAIL_HOST: postfix-relay
+  # MAIL_PORT: "25"
+  # MAIL_FROM_ADDRESS: freescout@example.com
 
 persistence:
   enabled: false

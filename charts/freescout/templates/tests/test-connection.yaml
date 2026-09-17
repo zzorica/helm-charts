@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "freescout.fullname" . }}:{{ .Values.service.port }}']
+      args: ['--header', 'Host: {{ include "freescout.appHost" . }}', '{{ include "freescout.fullname" . }}:{{ .Values.service.port }}/login']
   restartPolicy: Never
