@@ -60,7 +60,7 @@ spec:
             value: {{ .Values.freescout.admin_first_name |  default "Admin" | quote}}
           - name: ADMIN_LAST_NAME
             value: {{ .Values.freescout.admin_last_name |  default "User" | quote }}
-          - name: APPLICATION_NAME
+          - name: FREESCOUT_APPLICATION_NAME
             value: {{ .Values.freescout.application_name |  default "Freescout" | quote }}
           {{- if .Values.mariadb.enabled }}
           - name: DB_HOST
@@ -101,14 +101,20 @@ spec:
                 name: {{ .Values.externalDatabase.existingSecret.secretName | default (printf "%s-%s" .Release.Name "db") }}
                 key: {{ .Values.externalDatabase.existingSecret.passwordKey | default "db-password" }}
           {{- end }}
-          - name: DISPLAY_ERRORS
+          - name: FREESCOUT_APP_DEBUG
             value: {{ .Values.freescout.display_errors | quote }}
           - name: ENABLE_AUTO_UPDATE
             value: {{ .Values.freescout.enable_auto_update | quote }}
-          - name: ENABLE_SSL_PROXY
-            value: {{ .Values.freescout.enable_ssl_proxy | quote }}
-          - name: SITE_URL
-            value: {{ .Values.freescout.site_url | quote }}
+          {{- if .Values.freescout.trusted_proxies }}
+          - name: FREESCOUT_APP_TRUSTED_PROXIES
+            value: {{ .Values.freescout.trusted_proxies | quote }}
+          {{- end }}
+          - name: APP_URL
+            value: {{ include "freescout.appUrl" . | quote }}
+          {{- range $key, $value := .Values.freescoutConfig }}
+          - name: FREESCOUT_{{ $key }}
+            value: {{ $value | quote }}
+          {{- end }}
           {{- if .Values.extraEnv }}
             {{- toYaml .Values.extraEnv | nindent 10 }}
           {{- end }}
@@ -121,26 +127,32 @@ spec:
             httpGet:
               path: /login
               port: http
-              {{- if .Values.freescout.enable_ssl_proxy }}
               httpHeaders:
+                - name: Host
+                  value: {{ include "freescout.appHost" . | quote }}
+                {{- if hasPrefix "https://" (include "freescout.appUrl" .) }}
                 - name: X-Forwarded-Proto
                   value: https
-              {{- end }}
+                {{- end }}
           readinessProbe:
             initialDelaySeconds: 20
             httpGet:
               path: /login
               port: http
-              {{- if .Values.freescout.enable_ssl_proxy }}
               httpHeaders:
+                - name: Host
+                  value: {{ include "freescout.appHost" . | quote }}
+                {{- if hasPrefix "https://" (include "freescout.appUrl" .) }}
                 - name: X-Forwarded-Proto
                   value: https
-              {{- end }}
+                {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: data
               mountPath: /data
+            - name: logs
+              mountPath: /logs
       volumes:
         - name: data
           {{- if .Values.persistence.enabled }}
@@ -149,6 +161,8 @@ spec:
           {{- else }}
           emptyDir: {}
           {{- end }}
+        - name: logs
+          emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
