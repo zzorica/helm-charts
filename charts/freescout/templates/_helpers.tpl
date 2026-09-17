@@ -97,3 +97,19 @@ trusts requests for that host.
 {{- define "freescout.appHost" -}}
 {{- (urlParse (include "freescout.appUrl" .)).host -}}
 {{- end -}}
+
+{{/*
+httpGet block shared by the startup, liveness and readiness probes. The image only serves
+requests for the configured host and redirects http to https when APP_URL is https.
+*/}}
+{{- define "freescout.probeHttpGet" -}}
+path: /login
+port: http
+httpHeaders:
+  - name: Host
+    value: {{ include "freescout.appHost" . | quote }}
+  {{- if hasPrefix "https://" (include "freescout.appUrl" .) }}
+  - name: X-Forwarded-Proto
+    value: https
+  {{- end }}
+{{- end -}}

@@ -70,6 +70,30 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+# Probes. The 2.x image needs 1-2 minutes to configure itself on every start, and the first boot
+# after an image upgrade additionally runs FreeScout database migrations, which can take much
+# longer. The startup probe covers that window (default 90 x 10s = 15 minutes); liveness and
+# readiness only start once it has succeeded. Do not disable or shorten it on upgrades.
+startupProbe:
+  enabled: true
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 90
+
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
+
 autoscaling:
   enabled: false
   minReplicas: 1
