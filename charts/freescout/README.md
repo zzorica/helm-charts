@@ -39,3 +39,6 @@ database and the data volume first. See the image's
 - The config file on the `/data` volume moves from `/data/config` to `/data/config/config`.
   The container migrates it automatically on first boot.
 - Container logs are now written to `/logs` (mounted as an emptyDir).
+- Chart 1.0.1 adds a startup probe (15 minutes by default, see `startupProbe`). Without it the
+  liveness probe kills the container before the first-boot migrations finish and the pod crash
+  loops. Liveness and readiness probes are configurable via `livenessProbe` / `readinessProbe`.
